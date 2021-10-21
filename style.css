@@ -1,0 +1,251 @@
+.loading {
+    --arm-front: 24deg;
+    --arm-front-end: -48deg;
+    --arm-back: 164deg;
+    --arm-back-end: -50deg;
+    --leg-front: 40deg;
+    --leg-front-end: 30deg;
+    --leg-back: 120deg;
+    --leg-back-end: -36deg;
+    --board-r: 0deg;
+    --board-x: 0px;
+    --body-r: 12deg;
+    --body-y: -65%;
+    --body-x: -85%;
+    --skate-x: 0px;
+    --skate-y: 0px;
+    --color: #F9A28E;
+    --line-top-x: 0%;
+    --line-bottom-x: 0%;
+    position: relative;
+    .skate {
+        position: relative;
+        width: 40px;
+        height: 46px;
+        transform: translate(var(--skate-x), var(--skate-y)) translateZ(0);
+        .body {
+            background: var(--color);
+            height: 15px;
+            width: 7px;
+            border-radius: 4px;
+            transform-origin: 4px 11px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(var(--body-x), var(--body-y)) rotate(var(--body-r)) translateZ(0);
+            &:before {
+                content: '';
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+                bottom: 16px;
+                left: 0;
+                position: absolute;
+                background: var(--color);
+                transform: translateY(-.5px);
+            }
+            .arm,
+            .arm:before,
+            .leg,
+            .leg:before {
+                content: '';
+                width: var(--w, 11px);
+                height: 4px;
+                top: var(--t, 0);
+                left: var(--l, 2px);
+                border-radius: 2px;
+                transform-origin: 2px 2px;
+                position: absolute;
+                background: var(--color);
+                transform: rotate(var(--r, 0deg));
+            }
+            .arm {
+                &:before {
+                    --l: 8px;
+                }
+                &.front {
+                    --r: var(--arm-front);
+                    &:before {
+                        --r: var(--arm-front-end);
+                    }
+                }
+                &.back {
+                    --r: var(--arm-back);
+                    &:before {
+                        --r: var(--arm-back-end);
+                    }
+                }
+            }
+            .leg {
+                --w: 11px;
+                --t: 11px;
+                &:before {
+                    --t: 0;
+                    --l: 8px;
+                }
+                &.front {
+                    --r: var(--leg-front);
+                    &:before {
+                        --r: var(--leg-front-end);
+                    }
+                }
+                &.back {
+                    --l: 1px;
+                    --r: var(--leg-back);
+                    &:before {
+                        --r: var(--leg-back-end);
+                    }
+                }
+            }
+        }
+        .board {
+            position: absolute;
+            left: 2px;
+            bottom: -1px;
+            transform: translateX(var(--board-x)) rotate(var(--board-r)) translateZ(0);
+            transform-origin: 7px 5.5px;
+            svg {
+                display: block;
+                width: 34px;
+                height: 8px;
+                fill: var(--color);
+            }
+        }
+    }
+    .line {
+        height: 3px;
+        border-radius: 1px;
+        overflow: hidden;
+        position: absolute;
+        right: 105%;
+        top: 18px;
+        width: 16px;
+        transform: scaleY(.75);
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            background: var(--color);
+            transform: translateX(var(--x, var(--line-top-x)));
+        }
+        &.bottom {
+            --x: var(--line-bottom-x);
+            width: 13px;
+            top: 24px;
+        }
+    }
+}
+
+.link {
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    svg {
+        display: block;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+#keyboard {
+    display: grid;
+    grid-gap: 8px;
+    position: absolute;
+    left: 50%;
+    bottom: 48px;
+    user-select: none;
+    transform: translateX(-50%);
+    button {
+        appearance: none;
+        height: 36px;
+        width: 40px;
+        border-radius: 7px;
+        background: #2C2C31;
+        border: none;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: scale(var(--scale, 1)) translateZ(0);
+        transition: transform .15s;
+        svg {
+            display: block;
+            width: 8px;
+            height: 8px;
+            fill: var(--color, #7F7F85);
+            transition: fill .15s;
+        }
+        &.up {
+            grid-row: 1;
+            grid-column: 2;
+        }
+        &.left {
+            grid-row: 2;
+            grid-column: 1;
+        }
+        &.right {
+            grid-row: 2;
+            grid-column: 3;
+        }
+        &.down {
+            grid-row: 2;
+            grid-column: 2;
+        }
+        &.pressed {
+            --scale: .95;
+            --color: #fff;
+        }
+    }
+    span {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -24px;
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #7F7F85;
+        text-align: center;
+        transition: opacity .25s;
+        strong {
+            transition: color .15s;
+            color: var(--color, #7F7F85);
+        }
+        &.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        &.pressed {
+            --color: #fff;
+        }
+    }
+}
+
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: inherit;
+    &:before,
+    &:after {
+        box-sizing: inherit;
+    }
+}
+
+// Center & dribbble
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #242428;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
